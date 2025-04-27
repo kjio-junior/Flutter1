@@ -1,0 +1,48 @@
+name: helloworld
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - lib/assets/Archive DM Icon.png
+    - lib/assets/Archives LM Icon.png
+    - lib/assets/Arrow Divider DM.png
+    - lib/assets/Arrow Divider LM.png
+    - lib/assets/Banner.png
+    - lib/assets/Exit DM Icon.png
+    - lib/assets/Exit LM Icon.png
+    - lib/assets/Home DM Icon.png
+    - lib/assets/Home LM Icon.png
+    - lib/assets/Moon Icon.png
+    - lib/assets/PHantasya Logo DM.png
+    - lib/assets/PHantasya Logo LM.png
+    - lib/assets/Quiz DM Icon.png
+    - lib/assets/Quiz LM Icon.png
+    - lib/assets/Settings DM Icon.png
+    - lib/assets/Settings LM Icon.png
+    - lib/assets/Sun Icon.png
+
+  fonts:
+    - family: BonaNova
+      fonts:
+        - asset: fonts/BonaNovaSC-Regular.ttf
+    - family: InstrumentSans
+      fonts:
+        - asset: fonts/InstrumentSans-Regular.ttf
