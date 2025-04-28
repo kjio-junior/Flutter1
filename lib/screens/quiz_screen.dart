@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:helloworld/main.dart';
+import 'package:helloworld/screens/quiz2_screen.dart'; // Make sure this path is correct
 
 class QuizScreen extends StatelessWidget {
   final VoidCallback toggleTheme;
@@ -55,6 +56,7 @@ class QuizScreen extends StatelessWidget {
             ),
           ),
 
+          // Bottom decorative image
           Center(
             child: Image.asset(
               isDarkMode
@@ -80,6 +82,7 @@ class QuizScreen extends StatelessWidget {
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
+                  // First paragraph with bold "Important note"
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16.0),
                     child: RichText(
@@ -139,8 +142,10 @@ class QuizScreen extends StatelessWidget {
             ),
           ),
 
+          // Spacing before button
           const SizedBox(height: 40),
 
+          // Start Button with navigation
           Padding(
             padding: const EdgeInsets.only(bottom: 60.0),
             child: SizedBox(
@@ -155,7 +160,19 @@ class QuizScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  // Navigation to Quiz2Screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (context) => Quiz2Screen(
+                            toggleTheme: toggleTheme,
+                            isDarkMode: isDarkMode,
+                          ),
+                    ),
+                  );
+                },
                 child: const Text(
                   'Start',
                   style: TextStyle(
