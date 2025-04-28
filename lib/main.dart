@@ -19,7 +19,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool _isDarkMode = false;
-  int _currentTabIndex = 1; // <-- Added to remember selected tab
+  int _currentTabIndex = 1;
 
   void _toggleTheme() {
     setState(() {
@@ -87,7 +87,7 @@ class _MyAppState extends State<MyApp> {
             return MainNavigationScreen(
               toggleTheme: _toggleTheme,
               isDarkMode: _isDarkMode,
-              initialIndex: _currentTabIndex, // <-- Pass the remembered tab
+              initialIndex: _currentTabIndex,
               onTabChanged: (index) {
                 _currentTabIndex = index;
               },
@@ -122,11 +122,40 @@ class MainNavigationScreen extends StatefulWidget {
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   late int _selectedIndex;
+  final List<Widget> _screens = [];
 
   @override
   void initState() {
     super.initState();
     _selectedIndex = widget.initialIndex;
+    _initializeScreens();
+  }
+
+  void _initializeScreens() {
+    _screens.clear();
+    _screens.addAll([
+      QuizScreen(
+        toggleTheme: widget.toggleTheme,
+        isDarkMode: widget.isDarkMode,
+      ),
+      HomeContent(
+        toggleTheme: widget.toggleTheme,
+        isDarkMode: widget.isDarkMode,
+      ),
+      ArchivesScreen(
+        toggleTheme: widget.toggleTheme,
+        isDarkMode: widget.isDarkMode,
+      ),
+      const SizedBox(),
+    ]);
+  }
+
+  @override
+  void didUpdateWidget(MainNavigationScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.isDarkMode != widget.isDarkMode) {
+      _initializeScreens();
+    }
   }
 
   void _onItemTapped(int index) {
@@ -136,7 +165,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       setState(() {
         _selectedIndex = index;
       });
-      widget.onTabChanged(index); // <-- Update the parent (MyApp)
+      widget.onTabChanged(index);
     }
   }
 
@@ -150,8 +179,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               style: TextStyle(fontFamily: 'BonaNova'),
             ),
             content: const Text(
-              'You are about to exit the app. '
-              ' Continue?',
+              'You are about to exit the app. Continue?',
               style: TextStyle(fontFamily: 'BonaNova'),
             ),
             actions: [
@@ -177,22 +205,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = widget.isDarkMode;
-
-    final screens = [
-      QuizScreen(
-        toggleTheme: widget.toggleTheme,
-        isDarkMode: widget.isDarkMode,
-      ),
-      HomeContent(
-        toggleTheme: widget.toggleTheme,
-        isDarkMode: widget.isDarkMode,
-      ),
-      ArchivesScreen(
-        toggleTheme: widget.toggleTheme,
-        isDarkMode: widget.isDarkMode,
-      ),
-      const SizedBox(),
-    ];
 
     return Scaffold(
       appBar: PreferredSize(
@@ -252,7 +264,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           ],
         ),
       ),
-      body: IndexedStack(index: _selectedIndex, children: screens),
+      body: IndexedStack(index: _selectedIndex, children: _screens),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex == 3 ? 1 : _selectedIndex,
         onTap: _onItemTapped,
@@ -304,7 +316,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   }
 }
 
-class HomeContent extends StatelessWidget {
+class HomeContent extends StatefulWidget {
   final VoidCallback toggleTheme;
   final bool isDarkMode;
 
@@ -315,12 +327,51 @@ class HomeContent extends StatelessWidget {
   });
 
   @override
+  State<HomeContent> createState() => _HomeContentState();
+}
+
+class _HomeContentState extends State<HomeContent> {
+  final ScrollController _scrollController = ScrollController();
+  double _scrollPosition = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(_scrollPosition);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(HomeContent oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.isDarkMode != widget.isDarkMode) {
+      _scrollPosition = _scrollController.position.pixels;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_scrollController.hasClients) {
+          _scrollController.jumpTo(_scrollPosition);
+        }
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final isDark = isDarkMode;
+    final isDark = widget.isDarkMode;
     final bgColor = isDark ? MyApp.customColor : Colors.white;
     final textColor = isDark ? Colors.white : MyApp.customColor;
 
     return SingleChildScrollView(
+      key: const PageStorageKey<String>('homePageScrollPosition'),
+      controller: _scrollController,
       child: Column(
         children: [
           Stack(
@@ -394,13 +445,11 @@ class HomeContent extends StatelessWidget {
                         height: 24,
                       ),
                       const SizedBox(height: 16),
-                      // First row - Image left, Text right
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            // Image on the left
                             Image.asset(
                               isDark
                                   ? 'lib/assets/Archives LM Icon.png'
@@ -409,11 +458,9 @@ class HomeContent extends StatelessWidget {
                               height: 100,
                             ),
                             const SizedBox(width: 16),
-                            // Text on the right
                             Expanded(
                               child: Text(
-                                'Read about famous Aswangs, Spirits, Gods '
-                                'and Goddesses that color our history in the Archives.',
+                                'Read about famous Aswangs, Spirits, Gods and Goddesses that color our history in the Archives.',
                                 style: TextStyle(
                                   fontFamily: 'InstrumentSans',
                                   fontSize: 16,
@@ -425,17 +472,14 @@ class HomeContent extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 24),
-                      // Second row - Text left, Image right (added before last divider)
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            // Text on the left
                             Expanded(
                               child: Text(
-                                'Test what you\'ve learned about Philippine myths '
-                                'in the Quizzes Tab! Are you up for the challenge?',
+                                'Test what you\'ve learned about Philippine myths in the Quizzes Tab! Are you up for the challenge?',
                                 style: TextStyle(
                                   fontFamily: 'InstrumentSans',
                                   fontSize: 16,
@@ -444,7 +488,6 @@ class HomeContent extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(width: 16),
-                            // Image on the right
                             Image.asset(
                               isDark
                                   ? 'lib/assets/Quiz LM Icon.png'
@@ -456,7 +499,87 @@ class HomeContent extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 24),
-                      // Last arrow divider
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              isDark
+                                  ? 'lib/assets/Sun Icon.png'
+                                  : 'lib/assets/Moon Icon.png',
+                              width: 100,
+                              height: 100,
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Text(
+                                'Toggle between light and dark modes to fit your preferences.',
+                                style: TextStyle(
+                                  fontFamily: 'InstrumentSans',
+                                  fontSize: 16,
+                                  color: textColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Visit settings to view terms & conditions, additional information or send us a suggestion!',
+                                style: TextStyle(
+                                  fontFamily: 'InstrumentSans',
+                                  fontSize: 16,
+                                  color: textColor,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Image.asset(
+                              isDark
+                                  ? 'lib/assets/Settings DM Icon.png'
+                                  : 'lib/assets/Settings LM Icon.png',
+                              width: 100,
+                              height: 100,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              isDark
+                                  ? 'lib/assets/Exit LM Icon.png'
+                                  : 'lib/assets/Exit DM Icon.png',
+                              width: 100,
+                              height: 100,
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Text(
+                                'Need a break? Click the exit button to close the app. See you soon!',
+                                style: TextStyle(
+                                  fontFamily: 'InstrumentSans',
+                                  fontSize: 16,
+                                  color: textColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 24),
                       Image.asset(
                         isDark
                             ? 'lib/assets/Arrow Divider DM.png'

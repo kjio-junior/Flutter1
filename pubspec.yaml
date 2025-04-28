@@ -38,6 +38,10 @@ flutter:
     - lib/assets/Settings DM Icon.png
     - lib/assets/Settings LM Icon.png
     - lib/assets/Sun Icon.png
+    - lib/assets/QuizDownDM.png
+    - lib/assets/QuizDownLM.png
+    - lib/assets/QuizUpLM.png
+    - lib/assets/QuizUpDM.png
 
   fonts:
     - family: BonaNova
