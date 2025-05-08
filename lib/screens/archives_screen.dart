@@ -5,10 +5,10 @@ class ArchivesScreen extends StatelessWidget {
   final bool isDarkMode;
 
   const ArchivesScreen({
-    Key? key,
+    super.key,
     required this.toggleTheme,
     required this.isDarkMode,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

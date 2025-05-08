@@ -42,6 +42,12 @@ flutter:
     - lib/assets/QuizDownLM.png
     - lib/assets/QuizUpLM.png
     - lib/assets/QuizUpDM.png
+    - lib/assets/QuizScoreLM.png
+    - lib/assets/QuizScoreDM.png
+    - lib/assets/Balbal.png
+    - lib/assets/Bakunawa.png
+    - lib/assets/Tikbalang.png
+    - lib/assets/WhiteLady.png
 
   fonts:
     - family: BonaNova

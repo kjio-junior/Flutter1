@@ -6,321 +6,331 @@ class Quiz2Screen extends StatefulWidget {
   final bool isDarkMode;
 
   const Quiz2Screen({
-    Key? key,
+    super.key,
     required this.toggleTheme,
     required this.isDarkMode,
-  }) : super(key: key);
+  });
 
   @override
-  _Quiz2ScreenState createState() => _Quiz2ScreenState();
+  State<Quiz2Screen> createState() => _Quiz2ScreenState();
 }
 
 class _Quiz2ScreenState extends State<Quiz2Screen> {
-  int _currentQuestionIndex = 0;
-  int _score = 0;
-  bool _quizCompleted = false;
-  List<bool?> _answers = [null, null];
+  int score = 0;
+  bool answered = false;
+  bool isCorrect = false;
+  String selectedAnswer = '';
+  int currentQuestionIndex = 0;
 
-  final List<Map<String, dynamic>> _questions = [
+  final List<Map<String, dynamic>> questions = [
     {
-      'type': 'multiple_choice',
       'question':
-          'This aswang is a half-man, half-horse humanoid said to roam the vast mountains and rainforests of the Philippines.',
-      'options': ['Tikbalang', 'Sirena', 'Bakunawa', 'Apolaki'],
-      'correctAnswer': 0,
-      'category': 'Identification',
+          'This engkanto is a half-man, half-horse humanoid said to roam the vast mountains and rainforests of the Philippines.',
+      'correctAnswer': 'Tikbalang',
+      'choices': ['Bakunawa', 'Tikbalang', 'WhiteLady', 'Balbal'],
+      'explanations': {
+        'Bakunawa':
+            'The Bakunawa is a dragon-like creature that devours the moon, not a half-man, half-horse.',
+        'Tikbalang':
+            'Correct! The Tikbalang is indeed a half-man, half-horse creature from Philippine mythology.',
+        'WhiteLady':
+            'The White Lady is a ghostly apparition, not a half-man, half-horse creature.',
+        'Balbal':
+            'Balbal is a flesh-eating creature, not a half-man, half-horse being.',
+      },
     },
     {
-      'type': 'true_false',
-      'question': 'Tiktik is a type of Aswang.',
-      'correctAnswer': true,
-      'category': 'Identification',
+      'question':
+          'This creature is known as the moon-eating dragon in Philippine mythology.',
+      'correctAnswer': 'Bakunawa',
+      'choices': ['Bakunawa', 'Tikbalang', 'WhiteLady', 'Balbal'],
+      'explanations': {
+        'Bakunawa':
+            'Correct! The Bakunawa is a dragon-like creature that devours the moon.',
+        'Tikbalang':
+            'The Tikbalang is a half-man, half-horse creature, not a moon-eater.',
+        'WhiteLady': 'The White Lady is a ghost, not a moon-eater.',
+        'Balbal': 'Balbal is a flesh-eater, not a moon-eater.',
+      },
+    },
+    {
+      'question':
+          'This mythological creature is described as a ghostly woman in white who appears in lonely places.',
+      'correctAnswer': 'WhiteLady',
+      'choices': ['Bakunawa', 'Tikbalang', 'WhiteLady', 'Balbal'],
+      'explanations': {
+        'Bakunawa': 'The Bakunawa is a dragon-like creature, not a ghost.',
+        'Tikbalang':
+            'The Tikbalang is a half-man, half-horse creature, not a ghost.',
+        'WhiteLady':
+            'Correct! The White Lady is indeed the ghostly woman in white from Philippine folklore.',
+        'Balbal': 'Balbal is a flesh-eating creature, not a ghost.',
+      },
+    },
+    {
+      'question':
+          'This creature is known to steal corpses from graves and replace them with banana trunks.',
+      'correctAnswer': 'Balbal',
+      'choices': ['Bakunawa', 'Tikbalang', 'WhiteLady', 'Balbal'],
+      'explanations': {
+        'Bakunawa': 'The Bakunawa is a moon-eating dragon, not a corpse thief.',
+        'Tikbalang':
+            'The Tikbalang is a half-man, half-horse creature, not known for stealing corpses.',
+        'WhiteLady': 'The White Lady is a ghost, not a corpse thief.',
+        'Balbal':
+            'Correct! Balbal is indeed known for stealing corpses and replacing them with banana trunks.',
+      },
     },
   ];
 
-  void _answerQuestion(int selectedOption) {
+  void answerQuestion(String answer) {
+    if (answered) return;
+
     setState(() {
-      if (_questions[_currentQuestionIndex]['type'] == 'multiple_choice') {
-        _answers[_currentQuestionIndex] =
-            selectedOption ==
-            _questions[_currentQuestionIndex]['correctAnswer'];
-        if (_answers[_currentQuestionIndex] == true) {
-          _score++;
-        }
+      answered = true;
+      selectedAnswer = answer;
+      isCorrect = answer == questions[currentQuestionIndex]['correctAnswer'];
+      if (isCorrect) {
+        score += 10;
       }
-      _nextQuestion();
     });
   }
 
-  void _answerTrueFalse(bool answer) {
-    setState(() {
-      _answers[_currentQuestionIndex] =
-          answer == _questions[_currentQuestionIndex]['correctAnswer'];
-      if (_answers[_currentQuestionIndex] == true) {
-        _score++;
-      }
-      _nextQuestion();
-    });
-  }
-
-  void _nextQuestion() {
-    if (_currentQuestionIndex < _questions.length - 1) {
+  void nextQuestion() {
+    if (currentQuestionIndex < questions.length - 1) {
       setState(() {
-        _currentQuestionIndex++;
+        currentQuestionIndex++;
+        answered = false;
+        selectedAnswer = '';
+        isCorrect = false;
       });
     } else {
-      setState(() {
-        _quizCompleted = true;
-      });
+      Navigator.pop(context);
     }
   }
 
-  void _restartQuiz() {
-    setState(() {
-      _currentQuestionIndex = 0;
-      _score = 0;
-      _quizCompleted = false;
-      _answers = [null, null];
-    });
+  Widget _buildAnswerResult() {
+    final textColor = widget.isDarkMode ? Colors.white : MyApp.customColor;
+    final backgroundColor =
+        widget.isDarkMode ? MyApp.customColor.withOpacity(0.8) : Colors.white;
+
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                isCorrect ? 'Correct!' : 'Incorrect!',
+                style: TextStyle(
+                  fontFamily: 'BonaNova',
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                  color:
+                      isCorrect
+                          ? const Color(0xFF97E08A)
+                          : const Color(0xFFF46464),
+                ),
+              ),
+              const SizedBox(height: 30),
+              Text(
+                (questions[currentQuestionIndex]['explanations']
+                        as Map<String, String>)[selectedAnswer] ??
+                    '',
+                style: TextStyle(
+                  fontFamily: 'InstrumentSans',
+                  fontSize: 18,
+                  color: textColor,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 50),
+              ElevatedButton(
+                onPressed: nextQuestion,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      widget.isDarkMode ? Colors.white : MyApp.customColor,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 40,
+                    vertical: 15,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text(
+                  currentQuestionIndex < questions.length - 1
+                      ? 'Next'
+                      : 'Finish',
+                  style: TextStyle(
+                    fontFamily: 'InstrumentSans',
+                    fontSize: 20,
+                    color: widget.isDarkMode ? Colors.black : Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuizQuestion() {
+    final textColor = widget.isDarkMode ? Colors.white : MyApp.customColor;
+    final backgroundColor =
+        widget.isDarkMode ? MyApp.customColor.withOpacity(0.8) : Colors.white;
+    final textBoxColor = widget.isDarkMode ? Colors.white : MyApp.customColor;
+    final textBoxTextColor = widget.isDarkMode ? Colors.black : Colors.white;
+
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 20.0,
+              ),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.arrow_back, color: textColor),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    'Quiz',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'BonaNova',
+                      color: textColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: Center(
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Image.asset(
+                      widget.isDarkMode
+                          ? 'lib/assets/QuizScoreDM.png'
+                          : 'lib/assets/QuizScoreLM.png',
+                      width: 200,
+                    ),
+                    Text(
+                      '$score',
+                      style: TextStyle(
+                        fontFamily: 'InstrumentSans',
+                        fontSize: 24,
+                        color: widget.isDarkMode ? Colors.white : Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 30.0),
+              child: Text(
+                'Question #${currentQuestionIndex + 1}',
+                style: TextStyle(
+                  fontFamily: 'BonaNova',
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: textBoxColor,
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                child: Text(
+                  questions[currentQuestionIndex]['question'],
+                  style: TextStyle(
+                    fontFamily: 'InstrumentSans',
+                    fontSize: 18,
+                    color: textBoxTextColor,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 20,
+                  mainAxisSpacing: 20,
+                  children:
+                      (questions[currentQuestionIndex]['choices']
+                              as List<String>)
+                          .map((creature) {
+                            return GestureDetector(
+                              onTap: () => answerQuestion(creature),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.asset(
+                                    'lib/assets/$creature.png',
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Container(
+                                        color: Colors.grey[200],
+                                        child: Center(
+                                          child: Text(
+                                            creature,
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            );
+                          })
+                          .toList(),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final textColor = widget.isDarkMode ? Colors.white : MyApp.customColor;
-    final buttonColor = widget.isDarkMode ? Colors.white : MyApp.customColor;
-    final buttonTextColor = widget.isDarkMode ? Colors.black : Colors.white;
-    final cardColor = widget.isDarkMode ? Colors.grey[800] : Colors.grey[200];
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Quiz Questions',
-          style: TextStyle(fontFamily: 'BonaNova', color: textColor),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: textColor),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child:
-            _quizCompleted
-                ? _buildResultsScreen(textColor, buttonColor, buttonTextColor)
-                : _buildQuestionScreen(
-                  textColor,
-                  buttonColor,
-                  buttonTextColor,
-                  cardColor,
-                ),
-      ),
-    );
-  }
-
-  Widget _buildQuestionScreen(
-    Color textColor,
-    Color buttonColor,
-    Color buttonTextColor,
-    Color? cardColor,
-  ) {
-    final currentQuestion = _questions[_currentQuestionIndex];
-    final questionType = currentQuestion['type'];
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Progress indicator
-        LinearProgressIndicator(
-          value: (_currentQuestionIndex + 1) / _questions.length,
-          backgroundColor: Colors.grey[300],
-          color: buttonColor,
-        ),
-        const SizedBox(height: 20),
-
-        // Category chip
-        Chip(
-          label: Text(
-            currentQuestion['category'],
-            style: TextStyle(fontFamily: 'BonaNova', color: textColor),
-          ),
-          backgroundColor: cardColor,
-        ),
-        const SizedBox(height: 20),
-
-        // Question text
-        Text(
-          currentQuestion['question'],
-          style: TextStyle(
-            fontSize: 22,
-            fontFamily: 'BonaNova',
-            color: textColor,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 30),
-
-        // Question content based on type
-        Expanded(
-          child:
-              questionType == 'multiple_choice'
-                  ? _buildMultipleChoiceOptions(
-                    currentQuestion,
-                    buttonColor,
-                    buttonTextColor,
-                  )
-                  : _buildTrueFalseOptions(buttonColor, buttonTextColor),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMultipleChoiceOptions(
-    Map<String, dynamic> question,
-    Color buttonColor,
-    Color buttonTextColor,
-  ) {
-    return ListView.builder(
-      itemCount: question['options'].length,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: buttonColor,
-              foregroundColor: buttonTextColor,
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-            ),
-            onPressed: () => _answerQuestion(index),
-            child: Text(
-              question['options'][index],
-              style: TextStyle(fontSize: 16, fontFamily: 'BonaNova'),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildTrueFalseOptions(Color buttonColor, Color buttonTextColor) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: buttonColor,
-            foregroundColor: buttonTextColor,
-            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 40),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-          ),
-          onPressed: () => _answerTrueFalse(true),
-          child: Text(
-            'True',
-            style: TextStyle(
-              fontSize: 18,
-              fontFamily: 'BonaNova',
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        const SizedBox(height: 20),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: buttonColor,
-            foregroundColor: buttonTextColor,
-            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 40),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-          ),
-          onPressed: () => _answerTrueFalse(false),
-          child: Text(
-            'False',
-            style: TextStyle(
-              fontSize: 18,
-              fontFamily: 'BonaNova',
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildResultsScreen(
-    Color textColor,
-    Color buttonColor,
-    Color buttonTextColor,
-  ) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Quiz Completed!',
-            style: TextStyle(
-              fontSize: 28,
-              fontFamily: 'BonaNova',
-              color: textColor,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            'Your Score: $_score out of ${_questions.length}',
-            style: TextStyle(
-              fontSize: 22,
-              fontFamily: 'BonaNova',
-              color: textColor,
-            ),
-          ),
-          const SizedBox(height: 30),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: buttonColor,
-              foregroundColor: buttonTextColor,
-              padding: const EdgeInsets.symmetric(
-                vertical: 16.0,
-                horizontal: 40,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-            ),
-            onPressed: _restartQuiz,
-            child: Text(
-              'Restart Quiz',
-              style: TextStyle(
-                fontSize: 18,
-                fontFamily: 'BonaNova',
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text(
-              'Back to Home',
-              style: TextStyle(
-                fontSize: 16,
-                fontFamily: 'BonaNova',
-                color: textColor,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+    return answered ? _buildAnswerResult() : _buildQuizQuestion();
   }
 }
