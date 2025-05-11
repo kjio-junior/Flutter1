@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:helloworld/screens/quiz_screen.dart';
-import 'package:helloworld/screens/archives_screen.dart';
+import 'package:helloworld/screens/archives2.dart';
 import 'package:helloworld/screens/settings_screen.dart';
 
 void main() {
@@ -59,6 +59,23 @@ class _MyAppState extends State<MyApp> {
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.white70,
         ),
+        dialogTheme: DialogTheme(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          titleTextStyle: const TextStyle(
+            fontFamily: 'BonaNova',
+            fontSize: 20,
+            color: MyApp.customColor,
+            fontWeight: FontWeight.bold,
+          ),
+          contentTextStyle: const TextStyle(
+            fontFamily: 'InstrumentSans',
+            fontSize: 16,
+            color: MyApp.customColor,
+          ),
+        ),
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
@@ -77,6 +94,23 @@ class _MyAppState extends State<MyApp> {
           backgroundColor: Colors.white,
           selectedItemColor: MyApp.customColor,
           unselectedItemColor: Colors.black54,
+        ),
+        dialogTheme: DialogTheme(
+          backgroundColor: MyApp.customColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          titleTextStyle: const TextStyle(
+            fontFamily: 'BonaNova',
+            fontSize: 20,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+          contentTextStyle: const TextStyle(
+            fontFamily: 'InstrumentSans',
+            fontSize: 16,
+            color: Colors.white,
+          ),
         ),
       ),
       themeMode: _isDarkMode ? ThemeMode.dark : ThemeMode.light,
@@ -170,31 +204,49 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   }
 
   void _showQuitDialog() {
+    final isDark = widget.isDarkMode;
+
     showDialog(
       context: context,
       builder:
           (context) => AlertDialog(
-            title: const Text(
-              'Warning!',
-              style: TextStyle(fontFamily: 'BonaNova'),
+            backgroundColor: isDark ? MyApp.customColor : Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
             ),
-            content: const Text(
+            title: Text(
+              'Warning!',
+              style: TextStyle(
+                fontFamily: 'BonaNova',
+                color: isDark ? Colors.white : MyApp.customColor,
+              ),
+            ),
+            content: Text(
               'You are about to exit the app. Continue?',
-              style: TextStyle(fontFamily: 'BonaNova'),
+              style: TextStyle(
+                fontFamily: 'InstrumentSans',
+                color: isDark ? Colors.white : MyApp.customColor,
+              ),
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text(
+                child: Text(
                   'No',
-                  style: TextStyle(fontFamily: 'BonaNova'),
+                  style: TextStyle(
+                    fontFamily: 'BonaNova',
+                    color: isDark ? Colors.white : MyApp.customColor,
+                  ),
                 ),
               ),
               TextButton(
                 onPressed: () => SystemNavigator.pop(),
-                child: const Text(
+                child: Text(
                   'Yes',
-                  style: TextStyle(fontFamily: 'BonaNova'),
+                  style: TextStyle(
+                    fontFamily: 'BonaNova',
+                    color: isDark ? Colors.white : MyApp.customColor,
+                  ),
                 ),
               ),
             ],

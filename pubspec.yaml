@@ -11,6 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
+  url_launcher: ^6.1.11
 
 dev_dependencies:
   flutter_test:
@@ -48,6 +49,21 @@ flutter:
     - lib/assets/Bakunawa.png
     - lib/assets/Tikbalang.png
     - lib/assets/WhiteLady.png
+    - lib/assets/Manananggal.png
+    - lib/assets/Balbal2.png
+    - lib/assets/AsCat.png
+    - lib/assets/EngCat.png
+    - lib/assets/GGCat.png
+    - lib/assets/GhoCat.png
+    - lib/assets/HaliCh.png
+    - lib/assets/ManCh.png
+    - lib/assets/MisCat.png
+    - lib/assets/NunoCh.png
+    - lib/assets/AswangCategory.png
+    - lib/assets/EngkantoCategory.png
+    - lib/assets/G&GCategory.png
+    - lib/assets/GhostCategory.png
+    - lib/assets/MiscCategory.png
 
   fonts:
     - family: BonaNova
