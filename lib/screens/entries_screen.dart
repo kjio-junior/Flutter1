@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:helloworld/screens/settings_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-// Import your data models (update these paths to match your project structure)
-import 'package:helloworld/models/ghosts.dart';
-import 'package:helloworld/models/engkanto.dart';
-import 'package:helloworld/models/aswang.dart';
-import 'package:helloworld/models/miscellaneous.dart';
-import 'package:helloworld/models/gods_goddesses.dart';
+import 'package:helloworld/screens/ghosts.dart';
+import 'package:helloworld/screens/engkanto.dart';
+import 'package:helloworld/screens/aswang.dart';
+import 'package:helloworld/screens/miscellaneous.dart';
+import 'package:helloworld/screens/gods_goddesses.dart';
 
 class EntriesScreen extends StatefulWidget {
   final int index;
@@ -37,15 +35,18 @@ class _EntriesScreenState extends State<EntriesScreen> {
   };
 
   late List<dynamic> categoryEntries;
-  late dynamic entry;
+  dynamic entry;
   late Color categoryColor;
 
   @override
   void initState() {
     super.initState();
+    _initializeEntry();
+  }
+
+  void _initializeEntry() {
     categoryColor = categoryColors[widget.category] ?? const Color(0xFF685147);
 
-    // Assign entries dynamically based on category
     categoryEntries =
         widget.category == "Ghosts"
             ? ghostEntries
@@ -57,11 +58,60 @@ class _EntriesScreenState extends State<EntriesScreen> {
             ? godsGoddessesEntries
             : miscellaneousEntries;
 
-    entry = categoryEntries[widget.index];
+    if (categoryEntries.isNotEmpty &&
+        widget.index >= 0 &&
+        widget.index < categoryEntries.length) {
+      entry = categoryEntries[widget.index];
+    } else if (categoryEntries.isNotEmpty) {
+      entry = categoryEntries[0];
+      debugPrint("Warning: Invalid index. Defaulted to index 0.");
+    } else {
+      entry = null;
+      debugPrint("Error: No entries found for category '${widget.category}'.");
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant EntriesScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.index != widget.index ||
+        oldWidget.category != widget.category) {
+      setState(() {
+        _initializeEntry();
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (entry == null) {
+      return Scaffold(
+        backgroundColor: widget.isDarkMode ? categoryColor : Colors.white,
+        appBar: AppBar(
+          title: Text(
+            'Archives - ${widget.category}',
+            style: TextStyle(
+              fontFamily: 'BonaNova',
+              fontSize: 22,
+              color: widget.isDarkMode ? Colors.white : categoryColor,
+            ),
+          ),
+          backgroundColor: widget.isDarkMode ? categoryColor : Colors.white,
+          elevation: 0,
+        ),
+        body: Center(
+          child: Text(
+            'No entries available for ${widget.category}.',
+            style: TextStyle(
+              fontSize: 18,
+              color: widget.isDarkMode ? Colors.white : categoryColor,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: widget.isDarkMode ? categoryColor : Colors.white,
       appBar: AppBar(
@@ -125,11 +175,8 @@ class _EntriesScreenState extends State<EntriesScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              // Image of the creature
               Container(
                 width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.zero,
-                margin: EdgeInsets.zero,
                 child: Image.asset(
                   widget.isDarkMode
                       ? entry.darkImagePath
@@ -137,8 +184,6 @@ class _EntriesScreenState extends State<EntriesScreen> {
                   fit: BoxFit.fitWidth,
                 ),
               ),
-
-              // Name of the creature
               Image.asset(
                 widget.isDarkMode ? entry.darkNamePath : entry.lightNamePath,
                 width: 350,
@@ -156,8 +201,6 @@ class _EntriesScreenState extends State<EntriesScreen> {
                 },
               ),
               const SizedBox(height: 20),
-
-              // Description
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 60),
                 child: Text(
@@ -172,8 +215,6 @@ class _EntriesScreenState extends State<EntriesScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-
-              // Sources section with hyperlinks
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
@@ -193,7 +234,7 @@ class _EntriesScreenState extends State<EntriesScreen> {
                           },
                           child: Text(
                             "${i + 1}${i < entry.sources.length - 1 ? ', ' : ''}",
-                            style: TextStyle(
+                            style: const TextStyle(
                               decoration: TextDecoration.underline,
                               color: Colors.blue,
                             ),
@@ -203,8 +244,6 @@ class _EntriesScreenState extends State<EntriesScreen> {
                   ],
                 ),
               ),
-
-              // Page indicator image
               Image.asset(
                 widget.isDarkMode
                     ? entry.darkPageCountPath
@@ -214,8 +253,6 @@ class _EntriesScreenState extends State<EntriesScreen> {
                 fit: BoxFit.contain,
               ),
               const SizedBox(height: 10),
-
-              // NEXT BUTTON
               if (widget.index < categoryEntries.length - 1)
                 SizedBox(
                   width: 350,
@@ -257,8 +294,6 @@ class _EntriesScreenState extends State<EntriesScreen> {
                   ),
                 ),
               const SizedBox(height: 10),
-
-              // PREVIOUS BUTTON
               if (widget.index > 0)
                 SizedBox(
                   width: 350,

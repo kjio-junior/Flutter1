@@ -64,6 +64,36 @@ flutter:
     - lib/assets/G&GCategory.png
     - lib/assets/GhostCategory.png
     - lib/assets/MiscCategory.png
+    - lib/assets/ghost/whitelady_light.png
+    - lib/assets/ghost/whitelady_dark.png
+    - lib/assets/ghost/whiteladyname_light.png
+    - lib/assets/ghost/whiteladyname_dark.png
+    - lib/assets/ghost/Gpagecount1_light.png
+    - lib/assets/ghost/Gpagecount1_dark.png
+    - lib/assets/ghost/diplomat_light.png
+    - lib/assets/ghost/diplomat_dark.png
+    - lib/assets/ghost/diplomatname_light.png
+    - lib/assets/ghost/diplomatname_dark.png
+    - lib/assets/ghost/Gpagecount2_light.png
+    - lib/assets/ghost/Gpagecount2_dark.png
+    - lib/assets/ghost/MNLfilm_light.png
+    - lib/assets/ghost/MNLfilm_dark.png
+    - lib/assets/ghost/MNLfilmname_light.png
+    - lib/assets/ghost/MNLfilmname_dark.png
+    - lib/assets/ghost/Gpagecount3_light.png
+    - lib/assets/ghost/Gpagecount3_dark.png
+    - lib/assets/ghost/clarkhosp_light.png
+    - lib/assets/ghost/clarkhosp_dark.png
+    - lib/assets/ghost/clarkhospname_light.png
+    - lib/assets/ghost/clarkhospname_dark.png
+    - lib/assets/ghost/Gpagecount4_light.png
+    - lib/assets/ghost/Gpagecount4_dark.png
+    - lib/assets/ghost/pacocem_light.png
+    - lib/assets/ghost/pacocem_dark.png
+    - lib/assets/ghost/pacocemname_light.png
+    - lib/assets/ghost/pacocemname_dark.png
+    - lib/assets/ghost/Gpagecount5_light.png
+    - lib/assets/ghost/Gpagecount5_dark.png
 
   fonts:
     - family: BonaNova
