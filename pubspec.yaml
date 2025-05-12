@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_svg: ^2.0.0
   cupertino_icons: ^1.0.8
   url_launcher: ^6.1.11
 
@@ -94,6 +95,102 @@ flutter:
     - lib/assets/ghost/pacocemname_dark.png
     - lib/assets/ghost/Gpagecount5_light.png
     - lib/assets/ghost/Gpagecount5_dark.png
+    - lib/assets/engkanto/diwata.png
+    - lib/assets/engkanto/diwataname_dark.png
+    - lib/assets/engkanto/diwataname_light.png
+    - lib/assets/engkanto/Epagecount1_dark.png
+    - lib/assets/engkanto/Epagecount1_light.png
+    - lib/assets/engkanto/Epagecount2_dark.png
+    - lib/assets/engkanto/Epagecount2_light.png
+    - lib/assets/engkanto/Epagecount3_dark.png
+    - lib/assets/engkanto/Epagecount3_light.png
+    - lib/assets/engkanto/Epagecount4_dark.png
+    - lib/assets/engkanto/Epagecount4_light.png
+    - lib/assets/engkanto/Epagecount5_dark.png
+    - lib/assets/engkanto/Epagecount5_light.png
+    - lib/assets/engkanto/kapre.png
+    - lib/assets/engkanto/kaprename_dark.png
+    - lib/assets/engkanto/kaprename_light.png
+    - lib/assets/engkanto/nuno.png
+    - lib/assets/engkanto/nunoname_dark.png
+    - lib/assets/engkanto/nunoname_light.png
+    - lib/assets/engkanto/sirena.png
+    - lib/assets/engkanto/sirenaname_dark.png
+    - lib/assets/engkanto/sirenaname_light.png
+    - lib/assets/engkanto/tikbalang.png
+    - lib/assets/engkanto/tikbalangname_dark.png
+    - lib/assets/engkanto/tikbalangname_light.png
+    - lib/assets/aswang/Apagecount1_dark.png
+    - lib/assets/aswang/Apagecount1_light.png
+    - lib/assets/aswang/Apagecount2_dark.png
+    - lib/assets/aswang/Apagecount2_light.png
+    - lib/assets/aswang/Apagecount3_dark.png
+    - lib/assets/aswang/Apagecount3_light.png
+    - lib/assets/aswang/Apagecount4_dark.png
+    - lib/assets/aswang/Apagecount4_light.png
+    - lib/assets/aswang/Apagecount5_dark.png
+    - lib/assets/aswang/Apagecount5_light.png
+    - lib/assets/aswang/balbal.png
+    - lib/assets/aswang/balbalname_dark.png
+    - lib/assets/aswang/balbalname_light.png
+    - lib/assets/aswang/manananggal.png
+    - lib/assets/aswang/manananggalname_dark.png
+    - lib/assets/aswang/manananggalname_light.png
+    - lib/assets/aswang/tiktik.png
+    - lib/assets/aswang/tiktikname_dark.png
+    - lib/assets/aswang/tiyanak.png
+    - lib/assets/aswang/tiyanakname_dark.png
+    - lib/assets/aswang/tiyanakname_light.png
+    - lib/assets/aswang/yanggaw.png
+    - lib/assets/aswang/yanggawname_dark.png
+    - lib/assets/aswang/yanggawname_light.png
+    - lib/assets/godsNgoddesses/adlaw.png
+    - lib/assets/godsNgoddesses/adlawname_dark.png
+    - lib/assets/godsNgoddesses/adlawname_light.png
+    - lib/assets/godsNgoddesses/amanikable.png
+    - lib/assets/godsNgoddesses/amanikablename_light.png
+    - lib/assets/godsNgoddesses/amanikablename_dark.png
+    - lib/assets/godsNgoddesses/bakunawa.png
+    - lib/assets/godsNgoddesses/bakunawaname_dark.png
+    - lib/assets/godsNgoddesses/bakunawaname_light.png
+    - lib/assets/godsNgoddesses/bathala.png
+    - lib/assets/godsNgoddesses/bathalaname_dark.png
+    - lib/assets/godsNgoddesses/bathalaname_light.png
+    - lib/assets/godsNgoddesses/GGpagecount1_dark.png
+    - lib/assets/godsNgoddesses/GGpagecount1_light.png
+    - lib/assets/godsNgoddesses/GGpagecount2_dark.png
+    - lib/assets/godsNgoddesses/GGpagecount2_light.png
+    - lib/assets/godsNgoddesses/GGpagecount3_dark.png
+    - lib/assets/godsNgoddesses/GGpagecount3_light.png
+    - lib/assets/godsNgoddesses/GGpagecount4_dark.png
+    - lib/assets/godsNgoddesses/GGpagecount4_light.png
+    - lib/assets/godsNgoddesses/GGpagecount5_dark.png
+    - lib/assets/godsNgoddesses/GGpagecount5_light.png
+    - lib/assets/godsNgoddesses/haliya.png
+    - lib/assets/godsNgoddesses/haliyaname_dark.png
+    - lib/assets/godsNgoddesses/haliyaname_light.png
+    - lib/assets/misc/albularyo.png
+    - lib/assets/misc/albularyoname_dark.png
+    - lib/assets/misc/albularyoname_light.png
+    - lib/assets/misc/babaylan.png
+    - lib/assets/misc/babaylanname_dark.png
+    - lib/assets/misc/babaylanname_light.png
+    - lib/assets/misc/mambabarang.png
+    - lib/assets/misc/mambabarangname_dark.png
+    - lib/assets/misc/mambabarangname_light.png
+    - lib/assets/misc/Mpagecount1_dark.png
+    - lib/assets/misc/Mpagecount1_light.png
+    - lib/assets/misc/Mpagecount2_dark.png
+    - lib/assets/misc/Mpagecount2_dark.png
+    - lib/assets/misc/Mpagecount3_dark.png
+    - lib/assets/misc/Mpagecount3_light.png
+    - lib/assets/misc/Mpagecount4_dark.png
+    - lib/assets/misc/Mpagecount4_light.png
+    - lib/assets/misc/Mpagecount5_dark.png
+    - lib/assets/misc/Mpagecount5_light.png
+    - lib/assets/misc/santelmo.png
+    - lib/assets/misc/santelmoname_dark.png
+    - lib/assets/misc/santelmoname_light.png
 
   fonts:
     - family: BonaNova

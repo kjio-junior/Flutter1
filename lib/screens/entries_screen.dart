@@ -130,19 +130,19 @@ class _EntriesScreenState extends State<EntriesScreen> {
         backgroundColor: widget.isDarkMode ? categoryColor : Colors.white,
         elevation: 0,
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(top: 20.0, right: 12.0),
-            child: GestureDetector(
-              onTap: widget.toggleTheme,
-              child: Image.asset(
-                widget.isDarkMode
-                    ? 'lib/assets/Sun Icon.png'
-                    : 'lib/assets/Moon Icon.png',
-                width: 30,
-                height: 30,
-              ),
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.only(top: 20.0, right: 12.0),
+          //   child: GestureDetector(
+          //     onTap: widget.toggleTheme,
+          //     child: Image.asset(
+          //       widget.isDarkMode
+          //           ? 'lib/assets/Sun Icon.png'
+          //           : 'lib/assets/Moon Icon.png',
+          //       width: 30,
+          //       height: 30,
+          //     ),
+          //   ),
+          // ),
           Padding(
             padding: const EdgeInsets.only(top: 20.0, right: 20.0),
             child: GestureDetector(
@@ -173,16 +173,11 @@ class _EntriesScreenState extends State<EntriesScreen> {
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
+              Image.asset(
+                widget.isDarkMode ? entry.darkImagePath : entry.lightImagePath,
+                fit: BoxFit.fitWidth,
                 width: MediaQuery.of(context).size.width,
-                child: Image.asset(
-                  widget.isDarkMode
-                      ? entry.darkImagePath
-                      : entry.lightImagePath,
-                  fit: BoxFit.fitWidth,
-                ),
               ),
               Image.asset(
                 widget.isDarkMode ? entry.darkNamePath : entry.lightNamePath,
@@ -266,10 +261,15 @@ class _EntriesScreenState extends State<EntriesScreen> {
                       ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
+                        side: BorderSide(
+                          color:
+                              widget.isDarkMode ? categoryColor : Colors.white,
+                          width: 2,
+                        ),
                       ),
                     ),
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder:
@@ -315,7 +315,7 @@ class _EntriesScreenState extends State<EntriesScreen> {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder:
